@@ -4,11 +4,10 @@ This project is an iOS application built using Swift and SwiftUI. It fetches dat
 
 ## Screenshots
 
-### Characters List
-![Characters List](Screenshots/characters_view.png)
-
-### Episode Details
-![Character Detail](Screenshots/character_detail.png)
+<p align="center">
+  <img src="Screenshots/characters_view.png" alt="Characters List" width="200"/>
+  <img src="Screenshots/character_detail.png" alt="Character Detail" width="200"/>
+</p>
 
 ## Technologies Used
 
