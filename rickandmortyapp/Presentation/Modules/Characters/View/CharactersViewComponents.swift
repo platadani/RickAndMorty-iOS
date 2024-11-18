@@ -79,21 +79,17 @@ extension CharactersView {
     }
 
     var charactersListView: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.rmCharacters ?? [], id: \.id) { character in
-                        characterRow(character: character)
-                            .onTapGesture {
-                                navigationPath.append(Routing.characterDetail(character))
-                            }
-                    }
-                    if viewModel.nextPage != nil {
-                        lastRowView
-                    }
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.rmCharacters ?? [], id: \.id) { character in
+                    characterRow(character: character)
+                        .onTapGesture {
+                            navigationPath.append(Routing.characterDetail(character))
+                        }
                 }
-                .padding()
+                lastRowView
             }
+            .padding()
         }
     }
 
@@ -136,7 +132,9 @@ extension CharactersView {
         }
         .frame(height: 50)
         .task {
-            await viewModel.fetchMoreCharacters()
+            if viewModel.nextPage != nil {
+                await viewModel.fetchMoreCharacters()
+            }
         }
     }
 

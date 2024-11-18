@@ -53,7 +53,7 @@ class CharactersViewModel {
             paginationState = .isLoading
             let (newCharacters, nextPage) = try await fetchCharactersUseCase.execute(filters: searchFilters, page: nextPage)
             self.nextPage = nextPage
-            rmCharacters = newCharacters
+            rmCharacters?.append(contentsOf: newCharacters)
         } catch {
             await handleError(error)
         }
