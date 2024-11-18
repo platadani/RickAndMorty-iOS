@@ -6,5 +6,5 @@
 //
 
 protocol CharactersRepository {
-    func fetchCharacters(queryParams: [String: String]?) async throws -> RickAndMortyResponse
+    func fetchCharacters(queryParams: [String: String]?) async throws -> (characters: [RMCharacter], nextPage: Int?)
 }

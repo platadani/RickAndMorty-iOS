@@ -8,38 +8,22 @@
 import Foundation
 
 protocol FetchCharactersUseCase {
-    func execute(filters: SearchFilters) async throws -> [RMCharacter]
-    func executeNextPage(filters: SearchFilters) async throws -> [RMCharacter]
-    func isMoreDataAvailable() -> Bool
+    func execute(filters: SearchFilters, page: Int?) async throws -> (characters: [RMCharacter], nextPage: Int?)
 }
 
 class FetchCharactersUseCaseImpl: FetchCharactersUseCase {
     private let repository: CharactersRepository
 
-    private var nextPage: Int?
-
     init(repository: CharactersRepository) {
         self.repository = repository
     }
 
-    func execute(filters: SearchFilters) async throws -> [RMCharacter] {
-        let response = try await repository.fetchCharacters(queryParams: filters.toQueryParameters())
-        self.nextPage = response.info.nextPage
-        return response.results.map(RMCharacter.init)
-    }
-
-    func executeNextPage(filters: SearchFilters) async throws -> [RMCharacter] {
-        guard let nextPage else {
-            throw CustomError.nextURL
-        }
+    func execute(filters: SearchFilters, page: Int? = nil) async throws -> (characters: [RMCharacter], nextPage: Int?) {
         var queryParameters = filters.toQueryParameters()
-        queryParameters["page"] = String(nextPage)
+        if let page {
+            queryParameters["page"] = String(page)
+        }
         let response = try await repository.fetchCharacters(queryParams: queryParameters)
-        self.nextPage = response.info.nextPage
-        return response.results.map(RMCharacter.init)
-    }
-
-    func isMoreDataAvailable() -> Bool {
-        nextPage != nil
+        return (response.characters, response.nextPage)
     }
 }

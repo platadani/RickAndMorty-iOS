@@ -9,27 +9,14 @@
 
 class MockFetchCharactersUseCase: FetchCharactersUseCase {
     var shouldReturnError = false
-    var shouldMoreDataAvailable = false
+    var nextPage: Int?
+    var mockModel: [RMCharacter] = [.mock]
 
-    var mockCharacters: [RMCharacter] = [.mock]
-
-    func execute(filters: rickandmortyapp.SearchFilters) async throws -> [RMCharacter] {
+    func execute(filters: SearchFilters, page: Int? = nil) async throws -> ([RMCharacter], Int?) {
         if shouldReturnError {
             throw CustomError.unknown
         } else {
-            return mockCharacters
+            return (mockModel, nextPage)
         }
-    }
-
-    func executeNextPage(filters: rickandmortyapp.SearchFilters) async throws -> [RMCharacter] {
-        if shouldReturnError {
-            throw CustomError.unknown
-        } else {
-            return mockCharacters
-        }
-    }
-
-    func isMoreDataAvailable() -> Bool {
-        return shouldMoreDataAvailable
     }
 }

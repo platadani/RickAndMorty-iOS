@@ -23,16 +23,16 @@ class CharactersViewModelTests: XCTestCase {
         XCTAssertNotNil(charactersViewModel.rmCharacters)
     }
 
-    func testMoreDataAvailableForPagination() async {
-        fetchCharactersUseCase.shouldMoreDataAvailable = true
+    func testNextPageAfterFetchCharacters() async {
+        fetchCharactersUseCase.nextPage = 4
         await charactersViewModel.fetchCharacters()
-        XCTAssertTrue(charactersViewModel.isMoreDataAvailable)
+        XCTAssertNotNil(charactersViewModel.nextPage)
     }
 
     func testViewStateIsErrorIfUseCaseReturnsError() async {
         fetchCharactersUseCase.shouldReturnError = true
         await charactersViewModel.fetchCharacters()
-        XCTAssertTrue(charactersViewModel.viewState == .error("Unknown error"))
+        XCTAssertTrue(charactersViewModel.viewState == .error(String(localized: "error.unknown")))
     }
 
     func testViewStateIsIdleIfUseCaseNotReturnsError() async {
@@ -42,13 +42,13 @@ class CharactersViewModelTests: XCTestCase {
     }
 
     func testViewStateIsEmptyIfUseCaseReturnsEmptyCharacters() async {
-        fetchCharactersUseCase.mockCharacters = []
+        fetchCharactersUseCase.mockModel = []
         await charactersViewModel.fetchCharacters()
         XCTAssertTrue(charactersViewModel.viewState == .empty)
     }
 
     func testCharactersCount() async {
-        fetchCharactersUseCase.mockCharacters = [.mock, .mock]
+        fetchCharactersUseCase.mockModel = [.mock, .mock]
         await charactersViewModel.fetchCharacters()
         XCTAssertEqual(charactersViewModel.rmCharacters?.count, 2)
     }
@@ -59,4 +59,3 @@ class CharactersViewModelTests: XCTestCase {
         XCTAssertEqual(charactersViewModel.rmCharacters?.count, 0)
     }
 }
-

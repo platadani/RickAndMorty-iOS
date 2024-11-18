@@ -12,7 +12,8 @@ class CharactersRepositoryImpl: CharactersRepository {
         self.dataSource = dataSource
     }
 
-    func fetchCharacters(queryParams: [String: String]?) async throws -> RickAndMortyResponse {
-        try await dataSource.fetchCharacters(queryParams: queryParams)
+    func fetchCharacters(queryParams: [String: String]?) async throws -> (characters: [RMCharacter], nextPage: Int?) {
+        let response = try await dataSource.fetchCharacters(queryParams: queryParams)
+        return (response.results.map(RMCharacter.init), response.info.nextPage)
     }
 }

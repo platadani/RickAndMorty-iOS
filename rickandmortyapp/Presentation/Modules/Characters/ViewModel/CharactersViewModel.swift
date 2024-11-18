@@ -13,8 +13,6 @@ import Combine
 @Observable
 class CharactersViewModel {
     private let fetchCharactersUseCase: FetchCharactersUseCase
-
-    private var cancellables = Set<AnyCancellable>()
     var rmCharacters: [RMCharacter]? {
         didSet {
             if let rmCharacters, rmCharacters.isEmpty {
@@ -22,12 +20,13 @@ class CharactersViewModel {
             } else {
                 viewState = .idle
             }
+            paginationState = .idle
         }
     }
     var searchFilters = SearchFilters()
     var viewState: ViewState = .idle
     var paginationState: PaginationState = .idle
-    var isMoreDataAvailable: Bool = false
+    var nextPage: Int?
 
     init(fetchCharactersUseCase: FetchCharactersUseCase) {
         self.fetchCharactersUseCase = fetchCharactersUseCase
@@ -41,39 +40,33 @@ class CharactersViewModel {
     func fetchCharacters() async {
         do {
             viewState = .loading
-            let newCharacters = try await fetchCharactersUseCase.execute(filters: searchFilters)
-            isMoreDataAvailable = fetchCharactersUseCase.isMoreDataAvailable()
+            let (newCharacters, nextPage) = try await fetchCharactersUseCase.execute(filters: searchFilters, page: nil)
+            self.nextPage = nextPage
             rmCharacters = newCharacters
         } catch {
-            rmCharacters = []
             await handleError(error)
         }
     }
 
     func fetchMoreCharacters() async {
-        await MainActor.run {
-            paginationState = .isLoading
-        }
         do {
-            let newCharacters = try await fetchCharactersUseCase.executeNextPage(filters: searchFilters)
-            isMoreDataAvailable = fetchCharactersUseCase.isMoreDataAvailable()
-            rmCharacters?.append(contentsOf: newCharacters)
-            paginationState = .idle
+            paginationState = .isLoading
+            let (newCharacters, nextPage) = try await fetchCharactersUseCase.execute(filters: searchFilters, page: nextPage)
+            self.nextPage = nextPage
+            rmCharacters = newCharacters
         } catch {
-            rmCharacters = []
             await handleError(error)
         }
     }
 
     private func handleError(_ error: Error) async {
-        await MainActor.run {
-            guard let customError = error as? CustomError else { return }
-            switch customError {
-                case .invalidURL, .httpError, .nextURL, .unknown:
-                    viewState = .error(customError.displayError ?? "")
-                case .notFound:
-                    viewState = .empty
-            }
+        rmCharacters = []
+        guard let customError = error as? CustomError else { return }
+        switch customError {
+            case .invalidURL, .httpError, .nextURL, .unknown:
+                viewState = .error(customError.displayError ?? "")
+            case .notFound:
+                viewState = .empty
         }
     }
 }

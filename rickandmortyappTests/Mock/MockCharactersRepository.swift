@@ -8,14 +8,14 @@
 
 class MockCharactersRepository: CharactersRepository {
     var shouldReturnError = false
+    var nextPage: Int?
+    var mockModel: [RMCharacter] = [.mock]
 
-    var mockResponse: RickAndMortyResponse = .mock
-
-    func fetchCharacters(queryParams: [String: String]?) async throws -> RickAndMortyResponse {
+    func fetchCharacters(queryParams: [String: String]?) async throws -> (characters: [RMCharacter], nextPage: Int?) {
         if shouldReturnError {
             throw CustomError.invalidURL
         } else {
-            return mockResponse
+            return (mockModel, nextPage)
         }
     }
 }

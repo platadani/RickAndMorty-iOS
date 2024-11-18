@@ -20,7 +20,7 @@ class FetchCharactersUseCaseTests: XCTestCase {
     func testExecuteSuccess() async {
         let expectation = XCTestExpectation(description: "Fetch characters successfully")
         do {
-            let _ = try await fetchCharactersUseCase.execute(filters: SearchFilters())
+            let _ = try await fetchCharactersUseCase.execute(filters: .init())
             expectation.fulfill()
         } catch {
             XCTFail("Expected success but got failure")
@@ -31,35 +31,40 @@ class FetchCharactersUseCaseTests: XCTestCase {
         charactersRepository.shouldReturnError = true
         let expectation = XCTestExpectation(description: "Fetch characters with failure")
         do {
-            let _ = try await fetchCharactersUseCase.execute(filters: SearchFilters())
+            let _ = try await fetchCharactersUseCase.execute(filters: .init())
             XCTFail("Expected failure but got success")
         } catch {
             expectation.fulfill()
         }
     }
 
-    func testNoMoreDataAvailableBeforeFetchCharacters() {
-        let isMoreDataAvailable = fetchCharactersUseCase.isMoreDataAvailable()
-        XCTAssertFalse(isMoreDataAvailable)
-    }
-
-    func testMoreDataAvailableAfterFetchCharacters() async {
-        charactersRepository.mockResponse = .mockWithNextPage
+    func testNextPageAfterFetchCharacters() async {
+        charactersRepository.nextPage = 2
         do {
-            let _ = try await fetchCharactersUseCase.execute(filters: SearchFilters())
-            let isMoreDataAvailable = fetchCharactersUseCase.isMoreDataAvailable()
-            XCTAssertTrue(isMoreDataAvailable)
+            let (_, nextPage) = try await fetchCharactersUseCase.execute(filters: .init())
+            XCTAssertEqual(nextPage, 2)
         } catch {
             XCTFail("Expected success but got failure")
         }
     }
 
-    func testNoMoreDataAvailableAfterFetchCharactersButNoNextURLInResponse() async {
-        charactersRepository.mockResponse = .mock
+    func testCharactersCountSuccess() async {
+        charactersRepository.mockModel = [.mock, .mock, .mock]
         do {
-            let _ = try await fetchCharactersUseCase.execute(filters: SearchFilters())
-            let isMoreDataAvailable = fetchCharactersUseCase.isMoreDataAvailable()
-            XCTAssertFalse(isMoreDataAvailable)
+            let (response, _) = try await fetchCharactersUseCase.execute(filters: .init())
+            XCTAssertEqual(response.count, 3)
+        } catch {
+            XCTFail("Expected success but got failure")
+        }
+    }
+
+    func testCharactersValues() async {
+        charactersRepository.mockModel = [.mock, .mock, .mock]
+        do {
+            let (response, _) = try await fetchCharactersUseCase.execute(filters: .init())
+            XCTAssertEqual(response.first?.gender, .male)
+            XCTAssertEqual(response.first?.status, .alive)
+            XCTAssertEqual(response.first?.species, "Human")
         } catch {
             XCTFail("Expected success but got failure")
         }

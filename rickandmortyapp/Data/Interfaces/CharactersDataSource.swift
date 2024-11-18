@@ -10,5 +10,3 @@ import Foundation
 protocol CharactersDataSource {
     func fetchCharacters(queryParams: [String: String]?) async throws -> RickAndMortyResponse
 }
-
-

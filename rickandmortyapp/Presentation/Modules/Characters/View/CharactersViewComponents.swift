@@ -88,7 +88,7 @@ extension CharactersView {
                                 navigationPath.append(Routing.characterDetail(character))
                             }
                     }
-                    if viewModel.isMoreDataAvailable {
+                    if viewModel.nextPage != nil {
                         lastRowView
                     }
                 }

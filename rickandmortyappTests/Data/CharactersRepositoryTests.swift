@@ -30,9 +30,20 @@ class CharactersRepositoryTests: XCTestCase {
     func testFetchCharactersCountSuccess() async {
         let expectation = XCTestExpectation(description: "Fetch characters successfully")
         do {
-            let response = try await charactersRepository.fetchCharacters(queryParams: [:])
-            XCTAssertEqual(response.info.count, 1)
+            let (characters, _) = try await charactersRepository.fetchCharacters(queryParams: [:])
+            XCTAssertEqual(characters.count, 1)
             expectation.fulfill()
+        } catch {
+            XCTFail("Expected success but got failure")
+        }
+    }
+
+    func testFetchCharactersValuesSuccess() async {
+        do {
+            let (characters, _) = try await charactersRepository.fetchCharacters(queryParams: [:])
+            XCTAssertEqual(characters.first?.gender, .male)
+            XCTAssertEqual(characters.first?.status, .alive)
+            XCTAssertEqual(characters.first?.name, "Rick Sanchez")
         } catch {
             XCTFail("Expected success but got failure")
         }

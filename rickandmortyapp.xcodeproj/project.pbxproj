@@ -54,7 +54,7 @@
 		65F16AFD2CE79D2D0005FAEA /* GrayCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16AFC2CE79D2D0005FAEA /* GrayCardView.swift */; };
 		65F16AFF2CE7A0530005FAEA /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16AFE2CE7A04F0005FAEA /* PaginationState.swift */; };
 		65F16B012CE7A2040005FAEA /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16B002CE7A2010005FAEA /* URLExtension.swift */; };
-		65F16B172CE7BAAC0005FAEA /* WeatherViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16B152CE7BAAC0005FAEA /* WeatherViewModelTests.swift */; };
+		65F16B172CE7BAAC0005FAEA /* CharactersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16B152CE7BAAC0005FAEA /* CharactersViewModelTests.swift */; };
 		65F16B182CE7BAAC0005FAEA /* FetchCharactersUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16B112CE7BAAC0005FAEA /* FetchCharactersUseCaseTests.swift */; };
 		65F16B192CE7BAAC0005FAEA /* CharactersRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16B0F2CE7BAAC0005FAEA /* CharactersRepositoryTests.swift */; };
 		65F16B1E2CE7C2D70005FAEA /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F16B1D2CE7C2D70005FAEA /* MockAPIClient.swift */; };
@@ -125,7 +125,7 @@
 		65F16B002CE7A2010005FAEA /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		65F16B0F2CE7BAAC0005FAEA /* CharactersRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersRepositoryTests.swift; sourceTree = "<group>"; };
 		65F16B112CE7BAAC0005FAEA /* FetchCharactersUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCharactersUseCaseTests.swift; sourceTree = "<group>"; };
-		65F16B152CE7BAAC0005FAEA /* WeatherViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModelTests.swift; sourceTree = "<group>"; };
+		65F16B152CE7BAAC0005FAEA /* CharactersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersViewModelTests.swift; sourceTree = "<group>"; };
 		65F16B1D2CE7C2D70005FAEA /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
 		65F16B1F2CE7C2F90005FAEA /* MockCharactersDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCharactersDataSource.swift; sourceTree = "<group>"; };
 		65F16B212CE7C55E0005FAEA /* MockCharactersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCharactersRepository.swift; sourceTree = "<group>"; };
@@ -451,7 +451,7 @@
 		65F16B162CE7BAAC0005FAEA /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				65F16B152CE7BAAC0005FAEA /* WeatherViewModelTests.swift */,
+				65F16B152CE7BAAC0005FAEA /* CharactersViewModelTests.swift */,
 				650D95C42CE8BD90000DF36E /* SearchFiltersTests.swift */,
 			);
 			path = Presentation;
@@ -624,7 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65F16B172CE7BAAC0005FAEA /* WeatherViewModelTests.swift in Sources */,
+				65F16B172CE7BAAC0005FAEA /* CharactersViewModelTests.swift in Sources */,
 				65F16B182CE7BAAC0005FAEA /* FetchCharactersUseCaseTests.swift in Sources */,
 				65F16B242CE7CAC80005FAEA /* MockFetchCharactersUseCase.swift in Sources */,
 				65F16B192CE7BAAC0005FAEA /* CharactersRepositoryTests.swift in Sources */,
